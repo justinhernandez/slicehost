@@ -10,7 +10,7 @@
  * @version 0.1
  * @license http://opensource.org/licenses/lgpl-2.1.php
  */
-class Active_Resource_Core
+class ActiveResource
 {
 
 	// The REST site address, e.g., http://user:pass@domain:port/

@@ -8,7 +8,7 @@
  * @version 0.1
  * @license http://opensource.org/licenses/lgpl-2.1.php
  */
-class Slicehost extends Active_Resource_Core
+abstract class Slicehost_Core extends ActiveResource
 {
 	/**
 	 * Creates and returns backup object
@@ -154,7 +154,7 @@ class Slicehost extends Active_Resource_Core
 
 		// throw an exception if api key is false
 		if ( ! $api_key)
-			throw new Kohana_User_Exception('Slicehost API', 'Slicehost api key is not valid!');
+			throw new Kohana_Exception('Slicehost api key is not valid!');
 
 		return "https://$api_key@api.slicehost.com/";
 	}

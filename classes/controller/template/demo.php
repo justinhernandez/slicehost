@@ -1,38 +1,45 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Quick_Demo_Controller extends Controller
+class Controller_Template_Demo extends Controller_Template
 {
-	// don't allow in production
-	const ALLOW_PRODUCTION = FALSE;
+
+	// template
+	public $template = false;
+	// autoload
+	public $auto_render = false;
 
 	// construct class - print method name at top
-	public function __construct()
+	public function before()
 	{
-		parent::__construct();
+		parent::before();
 
-		print('<h1>'.Router::$method.'</h1>');
+		print('<h1>'.$this->request->action.'</h1>');
 	}
 
 	// nice index that lists methods
-	public function index()
+	public function action_index()
 	{
 		// base url
-		$base = url::current();
+		$base = $this->request->uri;
 		// get methods
 		$methods = new ArrayIterator(get_class_methods($this));
 		// methods to ignore
 		$ignore = array(
 							'__construct',
-							'index',
+							'action_index',
 							'__call',
 							'_kohana_load_view',
-							'd'
+							'd',
+							'before',
+							'after',
+							'index',
 						);
 
 		// print demo links
 		while ($methods->valid())
 		{
 			$c = $methods->current();
+			$c = str_replace('action_', '', $c);
 			if (!in_array($c, $ignore))
 				print "<a style='margin-left:25px' href='$base/$c'>".$c.'</a><br/>';
 			$methods->next();

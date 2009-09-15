@@ -1,13 +1,13 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Slicehost_Controller extends Quick_Demo_Controller
+class Controller_Slicehost extends Controller_Template_Demo
 {
 	// slice id
 	private $slice_id = NULL;
 	// api key can also be specified in the config, no need to pass everytime
 	private $api_key = NULL;
 
-	public function __construct()
+	public function before()
 	{
 		// Slicehost::method($data = array(), $api_key);
 		$this->b = Slicehost::backup(NULL, $this->api_key);
@@ -17,23 +17,23 @@ class Slicehost_Controller extends Quick_Demo_Controller
 		$this->s = Slicehost::slice(NULL, $this->api_key);
 		$this->z = Slicehost::zone(NULL, $this->api_key);
 
-		parent::__construct();
+		parent::before();
 	}
 
 	// list backups, will find specific id if passed
-	public function backups()
+	public function action_backups()
 	{
 		$this->d($this->b->find());
 	}
 
 	// list flavors, will find specific id if passed
-	public function flavors()
+	public function action_flavors()
 	{
 		$this->d($this->f->find());
 	}
 
 	// list images, will find specific id if passed
-	public function images()
+	public function action_images()
 	{
 		$data = $this->i->find();
 		// use filter_data to filter _data in response data
@@ -42,7 +42,7 @@ class Slicehost_Controller extends Quick_Demo_Controller
 	}
 
 	// list records, will find specific id if passed
-	public function records()
+	public function action_records()
 	{
 		$data = $this->r->find();
 		$filtered = Slicehost::filter_data($data);
@@ -50,19 +50,19 @@ class Slicehost_Controller extends Quick_Demo_Controller
 	}
 
 	// list slices, will find specific id if passed
-	public function slices()
+	public function action_slices()
 	{
 		$this->d($this->s->find());
 	}
 
 	// list zones, will find specific id if passed
-	public function zones()
+	public function action_zones()
 	{
 		$this->d($this->z->find());
 	}
 
 	// create new slice
-	public function create_slice()
+	public function action_create_slice()
 	{
 		$slice = Slicehost::slice(
 									array(
@@ -76,14 +76,14 @@ class Slicehost_Controller extends Quick_Demo_Controller
 	}
 
 	// option must be checked in slicehost manager control panel
-	public function delete_slice()
+	public function action_delete_slice()
 	{
 		$this->s->find($this->slice_id);
 		$this->d($this->s->destroy());
 	}
 
 	// rename zone
-	public function rename_slice()
+	public function action_rename_slice()
 	{
 		$this->s->find($this->slice_id);
 		$this->s->name = 'TestAPI';
@@ -91,7 +91,7 @@ class Slicehost_Controller extends Quick_Demo_Controller
 	}
 
 	// option must be checked in slicehost manager control panel
-	public function rebuild_slice()
+	public function action_rebuild_slice()
 	{
 		$this->s->find($this->slice_id);
 		// rebuild with slicehost image
@@ -101,7 +101,7 @@ class Slicehost_Controller extends Quick_Demo_Controller
 	}
 
 	// reboot slice
-	public function reboot_slice()
+	public function action_reboot_slice()
 	{
 		$this->s->find($this->slice_id);
 		// soft reboot
@@ -111,7 +111,7 @@ class Slicehost_Controller extends Quick_Demo_Controller
 	}
 
 	// create a new zone
-	public function create_zone()
+	public function action_create_zone()
 	{
 		$zone = Slicehost::zone(
 								array(
@@ -123,7 +123,7 @@ class Slicehost_Controller extends Quick_Demo_Controller
 	}
 
 	// delete zone
-	public function delete_zone()
+	public function action_delete_zone()
 	{
 		$zone_id = NULL;
 		$this->z->find($zone_id);
@@ -131,7 +131,7 @@ class Slicehost_Controller extends Quick_Demo_Controller
 	}
 
 	// create a new dns record, must specify zone id and ip address
-	public function create_record()
+	public function action_create_record()
 	{
 		$zone_id = NULL;
 		$ip_address = NULL;
@@ -148,7 +148,7 @@ class Slicehost_Controller extends Quick_Demo_Controller
 	}
 
 	// delete dns record
-	public function delete_record()
+	public function action_delete_record()
 	{
 		$record_id = NULL;
 		$this->z->find($record_id);
@@ -156,7 +156,7 @@ class Slicehost_Controller extends Quick_Demo_Controller
 	}
 
 	// retrieve api information
-	public function api_info()
+	public function action_api_info()
 	{
 		$api = Slicehost::api($this->api_key);	
 		$this->d($api);
